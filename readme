@@ -4,6 +4,9 @@ you the crime scene report, but you somehow lost it. You vaguely remember that t
 was a ​murder​ that occurred sometime on ​Jan.15, 2018​ and that it took place in ​SQL City​. Start by retrieving 
 the corresponding crime scene report from the police department’s database*/
 "https://mystery.knightlab.com/"
+https://github.com/NUKnightLab/sql-mysteries 
+- if you would like to look into the project outside of the dedicated website
+
 
 select * from crime_scene_report
 where city = "SQL City"
