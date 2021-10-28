@@ -9,14 +9,10 @@ select * from crime_scene_report
 where city = "SQL City"
 and type = "murder";
 
-SELECT *
-FROM person
-WHERE (address_street_name="Northwestern Dr"
-AND address_number = (SELECT MAX(address_number) FROM person LIMIT 1))
-OR (name LIKE "%Annabel%" AND address_street_name="Franklin Ave");
 
 select max(address_number), * from person 
 where address_street_name = 'Northwestern Dr';
+
 /*4919	14887	Morty Schapiro	118009	4919	Northwestern Dr	111564949*/
 
 select * from person
