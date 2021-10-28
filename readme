@@ -1,0 +1,96 @@
+/*Experienced SQL sleuths start here
+A crime has taken place and the detective needs your help. The detective gave 
+you the crime scene report, but you somehow lost it. You vaguely remember that the crime 
+was a ​murder​ that occurred sometime on ​Jan.15, 2018​ and that it took place in ​SQL City​. Start by retrieving 
+the corresponding crime scene report from the police department’s database*/
+"https://mystery.knightlab.com/"
+
+select * from crime_scene_report
+where city = "SQL City"
+and type = "murder";
+
+SELECT *
+FROM person
+WHERE (address_street_name="Northwestern Dr"
+AND address_number = (SELECT MAX(address_number) FROM person LIMIT 1))
+OR (name LIKE "%Annabel%" AND address_street_name="Franklin Ave");
+
+select max(address_number), * from person 
+where address_street_name = 'Northwestern Dr';
+/*4919	14887	Morty Schapiro	118009	4919	Northwestern Dr	111564949*/
+
+select * from person
+where name like "Annabel%" and address_street_name like "%Franklin Ave%";
+/*16371	Annabel Miller	490173	103	Franklin Ave	318771143*/
+
+select *
+from get_fit_now_member
+where person_id like "16371";
+/*90081	16371	Annabel Miller	20160208	gold*/
+
+select *
+from interview
+where person_id like "14887";
+/*I heard a gunshot and then saw a man run out. He had a "Get Fit Now Gym" bag. The membership number on the bag 
+started with "48Z". Only gold members have those bags. The man got into a car with a plate that included "H42W".*/
+
+select *
+from interview
+where person_id ="16371";
+
+/*I saw the murder happen, and I recognized the killer from my gym when I was working out last week on January the 9th.*/
+
+select * from 
+get_fit_now_check_in
+where check_in_date = "20180109";
+/* we know annabel's Id is 90081 and the only person she worked with is 48z7a so now we need to search up their information 
+
+select * from 
+get_fit_now_member m left join get_fit_now_check_in c on m.id=c.membership_id
+where id = "48Z7A";
+
+/*checking the solution*/
+INSERT INTO solution VALUES (1, 'Joe Germuska');
+        
+        SELECT value FROM solution;
+
+select distinct m.name 
+from get_fit_now_check_in c right join get_fit_now_member m on m.id=c.membership_id
+inner join person p  on p.id=m.person_id
+inner join drivers_license l on l.id=p.license_id 
+where c.membership_id like "%48z%" 
+and l.plate_number like "%H42W%" 
+and l.gender = 'male' 
+and c.check_in_date = '20180109' 
+and m.name <> "Joe Grumska";
+
+/*jeremy Bowers*/
+
+INSERT INTO solution VALUES (1, 'Jeremy Bowers');
+        
+        SELECT value FROM solution;
+
+/*Congrats, you found the murderer! But wait, there's more... If you think you're up for a challenge, try querying 
+the interview transcript of the murderer to find the real villain behind this crime. If you feel especially confident in your SQL skills, 
+try to complete this final step with no more than 2 queries. Use this same INSERT statement with your new suspect to check your answer.*/
+
+
+select i.transcript 
+from interview i join get_fit_now_member m on m.person_id=i.person_id
+where m.name = "Jeremy Bowers";
+
+/*I was hired by a woman with a lot of money. I don't know her name but I know she's around 5'5" (65") or 5'7" (67"). 
+She has red hair and she drives a Tesla Model S. I know that she attended the SQL Symphony Concert 3 times in December 2017.
+*/
+select * from facebook_event_checkin;
+
+select p.name from person p 
+where p.id in (select person_id from facebook_event_checkin where event_name = "SQL Symphony Concert" and date like "201712%" group by person_id having count(person_id)>=3)
+and p.license_id in (select id from drivers_license where height between 65 and 67 and car_make="Tesla" and car_model="Model S" and gender ="female" and hair_color = "red" );
+
+
+
+INSERT INTO solution VALUES (1, 'Miranda Priestly');
+        
+        SELECT value FROM solution
+/*Congrats, you found the brains behind the murder! Everyone in SQL City hails you as the greatest SQL detective of all time. Time to break out the champagne!*/
